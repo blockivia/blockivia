@@ -1,0 +1,19 @@
+{
+  "name": "Certificado BlockivIA",
+  "description": "IA y el futuro del Trabajo | Introducción y conceptos básicos de Blockchain, Billeteras Descentralizadas, Seguridad y Privacidad Digital",
+  "image": "ipfs://bafkreiamhcrh4c62dfounmz3ovapoli7ldgyvdzgirm777qfemjlzvqptq",
+  "attributes": [
+    {
+      "trait_type": "Emisor",
+      "value": "BlockivIA"
+    },
+    {
+      "trait_type": "Red",
+      "value": "Sepolia Testnet"
+    },
+    {
+      "trait_type": "Tipo",
+      "value": "Acreditación Oficial On-Chain"
+    }
+  ]
+}
