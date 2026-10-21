@@ -1,84 +1,76 @@
-# BlockivIA: redesign review
+# BlockivIA — prerendered-media integration stage
 
-Working branch: `feat/blockivia-redesign`. No production deployment or merge is part of this task.
+Branch: `feat/blockivia-redesign`. This is a structural implementation for review, **not a final approved visual design**. The requested 3D renderings have not been supplied. No replacement art, primitive figures, fake media, courses or social profiles are published.
 
-## Local development and preview
+## Development and validation
 
-Validated with Node.js 24 / npm 11. Install from the committed lockfile:
+Node 24 and npm 11:
 
 ```sh
-cd /workspace/blockivia
 npm ci
-npm run dev -- --hostname 0.0.0.0 --port 3000
-```
-
-Open port **3000** using the host application's preview controls, if available. The responsive site is the same app on desktop and mobile.
-
-- `/`: Spanish landing page.
-- `/en/`: English landing page; the selector preserves section anchors.
-- `/certificados/`: original Sepolia certificate workflow, isolated from the landing page.
-- `/en/certificates/`: English certificate interface.
-
-## Validation
-
-```sh
 npm run build
 npm run typecheck
 npm run lint
 npm test
+npm start
 ```
 
-Browser tests run against the actual `out/` static export, using Python 3 on port 4173 and Chromium. Set `CHROMIUM_PATH` if the browser is elsewhere; the cloud machine provides `/usr/bin/chromium`. Tests exercise keyboard and mobile navigation, language switching, page language, accessibility via axe, reduced motion, WebGL fallback, content and the disconnected wallet state. They do not send blockchain transactions.
+`npm start` serves `out/` on port 3000 with Python 3. For development use `npm run dev -- --hostname 0.0.0.0 --port 3000`; the browser suite serves the static export on port 4173. Stop only your own dev process before building. Tests use the installed Chromium or `CHROMIUM_PATH`.
 
-## Content and destinations
+- Spanish Home: `/`.
+- English Home: `/en/`.
+- Independent Web3 interfaces: `/certificados/` and `/en/certificates/`. There are no links to them on the Home. The original contract, certificate artwork and transaction/download behavior remain separate; no transaction is sent by the tests.
 
-`src/content/site.ts` contains the approved Spanish text and the paired English translation, the five approved capabilities, WhatsApp and social destinations, and the empty YouTube catalog.
+## Typography and layout
 
-- All eight blocks follow the approved order. No university logos or fabricated courses/videos/profiles are included.
-- WhatsApp uses the approved channel URL.
-- Contact uses `mailto:info@blockivia.xyz`.
-- Social URLs are deliberately `null`; their controls are disabled until real destinations are configured.
-- Add approved videos to `academyVideos` using their actual 11-character YouTube IDs and bilingual titles. Players load only after an explicit selection, using `youtube-nocookie.com`. Closing the modal removes the player.
-- The original certificate SVG, contract address, ABI, and claim/download behavior remain. Its existing artwork remains in Spanish; the English route translates the interface, not the certificate artwork.
+`src/app/fonts.ts` uses **Roboto Mono via `next/font/google`**, weights 400 and 500, and both root layouts load the generated variable. Roboto Mono is the selected interface font, not an assertion about the logo's original typeface. Next hosts the resulting font files in the static export. The build needs Google Fonts access; the browser does not request fonts from Google.
 
-## Visual implementation
+Desktop: 1320px maximum container, at least 48px side margins, 92px header, 700px minimum hero, 96px between sections, 64px column gaps, hero columns 44%/56% of the space remaining after their gap. Hero 52px/500/1.15, section headings 36px/500, secondary headings 24px/500, paragraphs 18px/400/1.65, navigation/buttons 16px/500.
 
-Three.js is dynamically imported near the hero viewport. It draws solid bevelled portals, a layered metallic core, lights, an orbit, and small articulated agents at work. No remote textures, models, fonts, or generated brand assets are required. Pixel ratio and frame rate are capped; rendering pauses out of view or when the document is hidden. Reduced motion draws a stationary frame; CSS geometry remains if WebGL cannot initialize. Other sections use solid CSS geometry with low-cost transforms.
+At widths up to 900px: 20px side margins, 76px header, 64px section separation, one column with visual media below text, headings 30px, paragraphs 16px/1.65, buttons 16px. Interface text is never below 16px; the supplied raster logo is kept intact rather than redrawing its embedded lettering.
 
-The user has selected `public/logo.png` as the official logo. Its bytes are unchanged. It appears once, in the hero, including its embedded tagline; the header contains only ordinary navigation. The comparison with the newly uploaded `blockivia-logo-original.png`, dimensions, checksums and display constraints are documented in [LOGO.md](LOGO.md). No wordmark is reconstructed with text or CSS.
+Colors: background `#050807`, primary text `#F2F6F2`, secondary text `#BAC8BF`, green `#00D69C`.
 
-The supplied Dribbble URL returned `CONNECT tunnel failed, response 403` in this environment. Its actual composition/animation could not be inspected. The current design follows the written visual direction and must be compared with the reference once accessible; it is not presented as an inspected reproduction.
+## Logo and content
 
-## Cloudflare Pages: static output, not a server deployment
+Only `public/logo.png` is rendered, once in the header. The original bitmap is unchanged, with its complete tricolor line and embedded tagline; no logo or tagline is repeated in the hero. Its transparent outer padding is positioned outside the layout flow without clipping the visible artwork, recoloring it or distorting its proportions. See [LOGO.md](LOGO.md) for original dimensions and checksums.
 
-`next.config.ts` uses `output: 'export'`, `trailingSlash: true`, and unoptimized local images. `npm run build` emits all four routes into `out/`. No Next.js server, API routes, or server actions are required. Separate root layouts produce correct Spanish and English document languages without relying on hydration; the documented `globalNotFound` option supplies the shared static 404 for those layouts. Client-side Web3 functionality remains compatible with the export.
+`src/content/site.ts` remains unchanged: all eight approved blocks, five capabilities and bilingual copy are preserved. No section numbers, microtext, decorative symbols, Explore action, certificate links or promotional claims are added. Contact and WhatsApp use the approved destinations. Social controls remain legible and disabled until their real URLs are supplied. The YouTube catalog remains empty; there is no invented empty-state artwork or course.
 
-Cloudflare Pages settings:
+## Required media
 
-- Framework preset: Next.js **Static HTML Export**, or None with the settings below.
-- Build command: `npm run build`.
-- Build output directory: `out`.
-- Node version: `24`.
-- Root directory: repository root.
+See [public/media/README.md](../public/media/README.md) for the exact filenames and art direction. Supply:
 
-`npm start` serves the export locally on port 3000 using Python 3; `npm run preview:static` serves it on port 4173. `next start` is not compatible with static exports. These servers are for local review; Cloudflare Pages serves `out/` directly.
+- `hero-tunnel.mp4` — roughly 3 seconds, 16:9, looping tunnel, silent, inline playback.
+- `hero-tunnel.webp` — real matching poster, including the reduced-motion view.
+- `soluciones.webp`.
+- `investigacion.webp`.
+- `capacitacion.webp`.
 
-`public/_headers` exports headers supported by Cloudflare Pages. Its CSP allows the configured Sepolia HTTPS RPC and YouTube's privacy-enhanced embed host. New RPC, wallet connectors, or embedded services may require deliberate CSP changes. Existing wallet connection uses an injected browser provider; private credentials are not stored by the site. A real wallet on Sepolia and test ETH are required for an actual claim. No transaction has been sent during review.
+`src/lib/media.ts` checks the approved filenames at build time. Missing files are omitted from component URLs; empty visual slots reserve the composition, without broken image requests or fabricated replacements. Rebuild after adding assets. The build reads no external media API or credentials.
 
-## External resources still pending
+`PrerenderedMedia` preserves real asset proportions. Videos play automatically, muted and looping only when at least 25% visible and the document is active; they pause off screen or when the tab is hidden. Inline playback is required, with fullscreen, picture-in-picture and remote playback disabled. Reduced motion renders the real poster without mounting the video. Provide the poster together with the MP4; otherwise reduced-motion users retain an empty slot.
 
-1. Accessible Dribbble reference or a screenshot/recording to compare its composition and motion.
-2. Real social-profile URLs.
-3. Approved YouTube videos, if the academy should show videos immediately.
-4. Optional manual review with a browser wallet and a Sepolia claim, separately authorized.
+`Reveal` observes available media at threshold 0.25 and unobserves after its first entrance. Transitions: opacity 0→1, translateY 36px→0, scale .94→1, 700ms, `cubic-bezier(.2,.8,.2,1)`. Reduced motion shows assets immediately without animation. No Three.js or CSS model remains.
 
-The first item limits comparison with the visual reference. The remaining items do not prevent local design review. Publication to Cloudflare and merging into `main` require the user's approval and have not been performed.
+Once supplied, the final assets still need codec/dimension, playback, loop, reduced-motion poster, image framing and visual approval checks. Prefer an H.264 MP4 with a widely supported pixel format and fast-start metadata. A passing build without the assets does not establish final 3D readiness.
 
-## Results in this cloud instance
+## Static Cloudflare Pages deployment
 
-- Static build, TypeScript, ESLint and `git diff --check`: passed.
-- Full browser suite: 8 tests passed (Spanish/English accessibility, bilingual navigation, 320/390/768px mobile behavior, reduced motion, disconnected Web3 and WebGL/fallback).
-- After the final language-link change: all 3 affected navigation/accessibility tests passed again.
-- The static review server on port 3000 returned HTTP 200 with expected content for both landing pages, both certificate routes and the original SVG.
-- The legacy certificate generator was converted to ESM to satisfy ESLint. Original and updated generators produced identical output with writes intercepted; the repository's certificate SVG was not regenerated.
-- No Cloudflare deployment, production publication, merge, or actual blockchain transaction was performed. No integrated-preview-opening tool is available in this session; a running local server does not by itself confirm that the host UI exposes a preview panel.
+`next.config.ts` exports static HTML with trailing slashes and unoptimized local images. Cloudflare Pages should build with `npm run build`, publish `out/`, and use Node 24. Separate root layouts supply correct initial document languages. `_headers` permits local media and self-hosted fonts; it disables fullscreen and restricts YouTube embeds to the privacy-enhanced host.
+
+Google Fonts build destinations are `fonts.googleapis.com` and `fonts.gstatic.com`; they were added to the environment configuration draft while preserving the existing API domains. Draft saving does not itself activate network configuration or publish the site. No production deployment or merge to `main` is part of this change.
+
+## Review status
+
+This version can be reviewed for typography, layout, mobile behavior and empty media positioning. Final 3D visuals are pending. The Dribbble reference previously returned a proxy 403, so comparison with its actual composition and animation remains pending until it is accessible or a recording is supplied.
+
+## Validation in this instance
+
+- `npm run build`, `npm run typecheck`, `npm run lint`, and `git diff --check`: passed.
+- Full browser suite: 8 tests passed, including both languages, accessibility, keyboard/mobile navigation, independent disconnected Web3, pending media without requests or substitute artwork, and typography checks.
+- Browser measurements at 1440px: container 1320px, side margin 60px, header 92px, columns 552.625px/703.375px with a 64px gap, hero font Roboto Mono 52px/500/59.8px.
+- Browser measurements at 390px: container 350px, side margins 20px, header 76px, one column, hero font Roboto Mono 30px/500. No overflowing content or DOM text below 16px was found in the landing page inspection.
+- The rendered interface font chain is `Roboto Mono, monospace`, including the independent Web3 controls; proportional automatic fallbacks are excluded. Generated WOFF2 family metadata identifies Roboto Mono.
+- Captures: `/workspace/scratch/blockivia-prepared-desktop-1440.png` and `/workspace/scratch/blockivia-prepared-mobile-390.png`.
+- `src/content/site.ts` and `public/logo.png` remain unchanged. The missing media means actual video decoding/playback and final object artwork are still pending validation; none of these results establish final visual approval or a production deployment.

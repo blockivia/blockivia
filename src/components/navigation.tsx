@@ -1,6 +1,6 @@
 "use client";
 
-import Arrow from "./arrow";
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, useSyncExternalStore } from "react";
 import { copy, type Locale } from "@/content/site";
@@ -49,8 +49,15 @@ export default function Navigation({ locale }: { locale: Locale }) {
         {t.skip}
       </a>
       <header className="site-header">
-        <Link className="home-link" href={home}>
-          {t.home}
+        <Link className="header-logo" href={home} aria-label={t.home}>
+          <Image
+            src="/logo.png"
+            alt="BlockivIA"
+            width={1000}
+            height={1000}
+            unoptimized
+            priority
+          />
         </Link>
         <nav className="desktop-nav" aria-label={t.navigation}>
           {t.nav.map((label, i) => (
@@ -93,15 +100,13 @@ export default function Navigation({ locale }: { locale: Locale }) {
               href={`#${ids[i]}`}
               onClick={() => dialog.current?.close()}
             >
-              <span>0{i + 1}</span>
               {label}
-              <Arrow />
             </a>
           ))}
         </nav>
         {languages}
         <a className="mobile-mail" href="mailto:info@blockivia.xyz">
-          info@blockivia.xyz <Arrow />
+          info@blockivia.xyz
         </a>
       </dialog>
     </>

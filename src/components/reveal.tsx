@@ -4,27 +4,36 @@ import { useEffect } from "react";
 
 export default function Reveal() {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const elements = document.querySelectorAll<HTMLElement>(
+      "[data-media-reveal]",
+    );
+    if (motion.matches) return;
     const observer = new IntersectionObserver(
-      (entries) =>
+      (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove("reveal-waiting");
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+            entry.target.classList.remove("media-waiting");
             observer.unobserve(entry.target);
           }
-        }),
-      { threshold: 0.08 },
+        });
+      },
+      { threshold: 0.25 },
     );
     elements.forEach((element) => {
-      // Keep all content visible without JS and content already on screen visible immediately.
-      if (element.getBoundingClientRect().top > window.innerHeight)
-        element.classList.add("reveal-waiting");
+      element.classList.add("media-waiting");
       observer.observe(element);
     });
+    const stopMotion = () => {
+      if (!motion.matches) return;
+      observer.disconnect();
+      elements.forEach((element) => element.classList.remove("media-waiting"));
+    };
+    motion.addEventListener("change", stopMotion);
     return () => {
       observer.disconnect();
-      elements.forEach((element) => element.classList.remove("reveal-waiting"));
+      motion.removeEventListener("change", stopMotion);
+      elements.forEach((element) => element.classList.remove("media-waiting"));
     };
   }, []);
   return null;

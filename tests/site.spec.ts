@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 for (const [path, lang, heading] of [
-  ["/", "es", "BlockivIA — Blockchain + IA en Bolivia"],
-  ["/en/", "en", "BlockivIA — Blockchain + AI in Bolivia"],
+  ["/", "es", "Soluciones, Investigación y Capacitación"],
+  ["/en/", "en", "Solutions, Research and Training"],
 ] as const) {
   test(`${lang}: static navigation, content, and accessibility`, async ({
     page,
@@ -99,12 +99,7 @@ for (const width of [320, 390, 768]) {
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBeTruthy();
-    expect(
-      await page
-        .locator(".object-assembly")
-        .first()
-        .evaluate((element) => getComputedStyle(element).animationName),
-    ).toBe("none");
+    await expect(page.locator(".media-waiting")).toHaveCount(0);
     await page.goto("/en/");
     await page.getByRole("button", { name: "Open navigation" }).click();
     await page
@@ -146,24 +141,50 @@ test("Web3 certificate workflow remains independent, localized, and handles no w
   await expect(page).toHaveURL("/en/");
 });
 
-test("hero renders real WebGL with a usable fallback", async ({ page }) => {
-  test.setTimeout(60000);
+test("pending media uses empty reserved spaces without invented assets", async ({
+  page,
+}) => {
+  const failedMedia: string[] = [];
+  page.on("request", (request) => {
+    if (new URL(request.url()).pathname.startsWith("/media/"))
+      failedMedia.push(request.url());
+  });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
-  await expect(page.locator(".webgl-host canvas")).toBeVisible({
-    timeout: 15000,
+  await expect(page.locator("canvas,video")).toHaveCount(0);
+  await expect(
+    page.locator(".media-slot[data-asset-state='pending']"),
+  ).toHaveCount(4);
+  await expect(page.locator("header img[src='/logo.png']")).toHaveCount(1);
+  await expect(page.locator("main img[src='/logo.png']")).toHaveCount(0);
+  await expect(page.locator("a[href*='certific']")).toHaveCount(0);
+  await page.evaluate(() => document.fonts.ready);
+  const metrics = await page
+    .getByRole("heading", { level: 1 })
+    .evaluate((el) => {
+      const s = getComputedStyle(el);
+      return {
+        size: s.fontSize,
+        weight: s.fontWeight,
+        line: s.lineHeight,
+        font: s.fontFamily,
+      };
+    });
+  expect(metrics.size).toBe("52px");
+  expect(metrics.weight).toBe("500");
+  expect(metrics.font).toContain("Roboto");
+  expect(failedMedia).toEqual([]);
+  await page.screenshot({
+    path: "/workspace/scratch/blockivia-prepared-desktop-1440.png",
+    fullPage: true,
   });
-  await expect(page.locator(".scene-ready")).toHaveCount(1);
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.screenshot({ path: "/tmp/blockivia-desktop.png", fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ path: "/tmp/blockivia-mobile.png", fullPage: true });
-  await page.addInitScript(() => {
-    HTMLCanvasElement.prototype.getContext = (() =>
-      null) as typeof HTMLCanvasElement.prototype.getContext;
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCSS(
+    "font-size",
+    "30px",
+  );
+  await page.screenshot({
+    path: "/workspace/scratch/blockivia-prepared-mobile-390.png",
+    fullPage: true,
   });
-  await page.reload();
-  await expect(page.locator(".scene-fallback")).toBeVisible();
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });

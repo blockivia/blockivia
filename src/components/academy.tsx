@@ -12,17 +12,7 @@ export default function Academy({ locale }: { locale: Locale }) {
   const videos = academyVideos.filter((video) =>
     /^[A-Za-z0-9_-]{11}$/.test(video.youtubeId),
   );
-  if (!videos.length)
-    return (
-      <div className="academy-art" aria-hidden="true">
-        <div className="academy-slabs">
-          <span />
-          <span />
-          <span />
-        </div>
-        <span className="art-caption">YouTube</span>
-      </div>
-    );
+  if (!videos.length) return null;
   return (
     <>
       <div className="video-grid">
@@ -35,12 +25,9 @@ export default function Academy({ locale }: { locale: Locale }) {
               dialog.current?.showModal();
             }}
           >
-            <span className="video-play" aria-hidden="true">
-              ▶
-            </span>
             <h3>{video.title[locale]}</h3>
             {video.description && <p>{video.description[locale]}</p>}
-            <span>{t.watch} ↗</span>
+            <span>{t.watch}</span>
           </button>
         ))}
       </div>
@@ -51,15 +38,14 @@ export default function Academy({ locale }: { locale: Locale }) {
         onClose={() => setSelected(null)}
       >
         <form method="dialog">
-          <button className="button button-outline">{t.close} ×</button>
+          <button className="button button-outline">{t.close}</button>
         </form>
         {selected && (
           <iframe
-            src={`https://www.youtube-nocookie.com/embed/${selected.youtubeId}?autoplay=1`}
+            src={`https://www.youtube-nocookie.com/embed/${selected.youtubeId}?autoplay=1&playsinline=1&fs=0`}
             title={selected.title[locale]}
             allow="autoplay; encrypted-media; picture-in-picture"
             referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
           />
         )}
       </dialog>

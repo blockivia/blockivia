@@ -1,6 +1,6 @@
 # BlockivIA
 
-Bilingual Next.js / React / TypeScript site, with a Three.js hero and a static export for Cloudflare Pages.
+Bilingual Next.js / React / TypeScript site, with slots for approved prerendered 3D media, Roboto Mono via next/font/google, and a static export for Cloudflare Pages. The media files are pending; this is not a final approved visual design.
 
 ```sh
 npm ci

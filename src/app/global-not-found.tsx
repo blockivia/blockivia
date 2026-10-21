@@ -1,8 +1,9 @@
 import Link from "next/link";
 import "./globals.css";
+import { robotoMono, interfaceFontStyle } from "./fonts";
 export default function NotFound() {
   return (
-    <html lang="es">
+    <html lang="es" className={robotoMono.variable} style={interfaceFontStyle}>
       <body>
         <main className="section">
           <span className="eyebrow">404</span>
