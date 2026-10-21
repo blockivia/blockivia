@@ -45,7 +45,7 @@ Browser tests run against the actual `out/` static export, using Python 3 on por
 
 Three.js is dynamically imported near the hero viewport. It draws solid bevelled portals, a layered metallic core, lights, an orbit, and small articulated agents at work. No remote textures, models, fonts, or generated brand assets are required. Pixel ratio and frame rate are capped; rendering pauses out of view or when the document is hidden. Reduced motion draws a stationary frame; CSS geometry remains if WebGL cannot initialize. Other sections use solid CSS geometry with low-cost transforms.
 
-The attached replacement logo is visible in chat but was not exposed as a downloadable local file during implementation. `public/logo.png` is the existing repository asset, left unchanged and provisional. Replace it with the exact original attachment when available. Its visible mark and aspect ratio must be checked at header, hero, and footer sizes; crop containers currently remove the existing file's black outer margins. Never regenerate or redraw the logo.
+The user has selected `public/logo.png` as the official logo. Its bytes are unchanged. It appears once, in the hero, including its embedded tagline; the header contains only ordinary navigation. The comparison with the newly uploaded `blockivia-logo-original.png`, dimensions, checksums and display constraints are documented in [LOGO.md](LOGO.md). No wordmark is reconstructed with text or CSS.
 
 The supplied Dribbble URL returned `CONNECT tunnel failed, response 403` in this environment. Its actual composition/animation could not be inspected. The current design follows the written visual direction and must be compared with the reference once accessible; it is not presented as an inspected reproduction.
 
@@ -67,13 +67,12 @@ Cloudflare Pages settings:
 
 ## External resources still pending
 
-1. Exact downloadable replacement logo attachment.
-2. Accessible Dribbble reference or a screenshot/recording to compare its composition and motion.
-3. Real social-profile URLs.
-4. Approved YouTube videos, if the academy should show videos immediately.
-5. Optional manual review with a browser wallet and a Sepolia claim, separately authorized.
+1. Accessible Dribbble reference or a screenshot/recording to compare its composition and motion.
+2. Real social-profile URLs.
+3. Approved YouTube videos, if the academy should show videos immediately.
+4. Optional manual review with a browser wallet and a Sepolia claim, separately authorized.
 
-The first two limit visual sign-off. The last three do not prevent local design review. Publication to Cloudflare and merging into `main` require the user's approval and have not been performed.
+The first item limits comparison with the visual reference. The remaining items do not prevent local design review. Publication to Cloudflare and merging into `main` require the user's approval and have not been performed.
 
 ## Results in this cloud instance
 

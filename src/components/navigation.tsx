@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Arrow from "./arrow";
 import Link from "next/link";
 import { useRef, useSyncExternalStore } from "react";
@@ -50,20 +49,8 @@ export default function Navigation({ locale }: { locale: Locale }) {
         {t.skip}
       </a>
       <header className="site-header">
-        <Link
-          className="brand"
-          href={home}
-          aria-label={`BlockivIA — ${t.home}`}
-        >
-          <span className="brand-crop">
-            <Image
-              src="/logo.png"
-              alt="BlockivIA"
-              width={1000}
-              height={1000}
-              priority
-            />
-          </span>
+        <Link className="home-link" href={home}>
+          {t.home}
         </Link>
         <nav className="desktop-nav" aria-label={t.navigation}>
           {t.nav.map((label, i) => (

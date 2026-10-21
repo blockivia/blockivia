@@ -59,16 +59,16 @@ export default function Landing({ locale }: { locale: Locale }) {
           <div className="hero-glow" />
           <TunnelScene />
           <div className="hero-content">
-            <div className="hero-logo">
+            <h1 id="hero-title" className="hero-logo">
               <Image
                 src="/logo.png"
-                alt="BlockivIA"
+                alt={`BlockivIA — ${t.tagline}`}
                 width={1000}
                 height={1000}
+                unoptimized
                 priority
               />
-            </div>
-            <h1 id="hero-title">{t.tagline}</h1>
+            </h1>
             <p className="hero-subtitle">
               {locale === "es" ? (
                 <>
@@ -336,15 +336,8 @@ export default function Landing({ locale }: { locale: Locale }) {
       </main>
       <footer className="site-footer">
         <div className="footer-top">
-          <Link href={locale === "es" ? "/" : "/en/"} className="footer-logo">
-            <span className="brand-crop">
-              <Image
-                src="/logo.png"
-                alt="BlockivIA"
-                width={1000}
-                height={1000}
-              />
-            </span>
+          <Link href={locale === "es" ? "/" : "/en/"} className="home-link">
+            {t.home} <Arrow />
           </Link>
           <nav aria-label={t.networks}>
             {siteLinks.socials.map((social) => {
