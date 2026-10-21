@@ -2,13 +2,13 @@
 
 `public/logo.png` is the official asset, as explicitly selected by the user. Its bytes remain unchanged.
 
-| Property | Official `logo.png` | Reference `blockivia-logo-original.png` |
-| --- | --- | --- |
-| Format | PNG | PNG |
-| Dimensions | 1000 × 1000 px | 500 × 500 px |
-| Color mode | RGBA, with transparency | RGB, with black background |
-| File size | 24,543 bytes | 40,320 bytes |
-| SHA-256 | `f82b100212ac143078a8854539df77030d404d5513df8571d198efc16e42a7b0` | `0a11694979cc6bcd04345b16ea4a56e019711e303059b9e250b75bf648e77fe9` |
+| Property   | Official `logo.png`                                                | Reference `blockivia-logo-original.png`                            |
+| ---------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Format     | PNG                                                                | PNG                                                                |
+| Dimensions | 1000 × 1000 px                                                     | 500 × 500 px                                                       |
+| Color mode | RGBA, with transparency                                            | RGB, with black background                                         |
+| File size  | 24,543 bytes                                                       | 40,320 bytes                                                       |
+| SHA-256    | `f82b100212ac143078a8854539df77030d404d5513df8571d198efc16e42a7b0` | `0a11694979cc6bcd04345b16ea4a56e019711e303059b9e250b75bf648e77fe9` |
 
 The reference was read from `origin/main` commit `53122054c38efd031b7c1b60b85d93e291d3c7d0` and copied intact to this branch for comparison. No merge or write to `main` was performed. The official asset on that commit is byte-identical to this branch's `public/logo.png`.
 

@@ -12,7 +12,9 @@ for (const [path, lang, heading] of [
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(path);
     await expect(page.locator("html")).toHaveAttribute("lang", lang);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName(heading);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName(
+      heading,
+    );
     await expect(page.locator("[data-block]")).toHaveCount(8);
     await expect(page.locator("iframe")).toHaveCount(0);
     await expect(
