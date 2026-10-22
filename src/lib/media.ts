@@ -6,6 +6,7 @@ import path from "node:path";
 // Rebuild the static export after adding the approved files to public/media/.
 export const mediaFiles = {
   heroVideo: "hero-tunnel.mp4",
+  heroMobileVideo: "hero-mobile.mp4",
   heroPoster: "hero-tunnel.webp",
   solutions: "soluciones.webp",
   research: "investigacion.webp",
