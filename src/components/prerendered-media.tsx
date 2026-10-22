@@ -1,13 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useSyncExternalStore } from "react";
-
-function subscribeToMotion(onChange: () => void) {
-  const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
+import { useEffect, useRef } from "react";
 
 export default function PrerenderedMedia({
   imageSrc,
@@ -20,44 +14,45 @@ export default function PrerenderedMedia({
 }) {
   const container = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const reduced = useSyncExternalStore(
-    subscribeToMotion,
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => true,
-  );
   const hasAsset = Boolean(imageSrc || videoSrc);
 
   useEffect(() => {
     const element = container.current;
     const player = video.current;
-    if (!element || !player || reduced) return;
-    let inView = false;
-    const syncPlayback = () => {
-      const active = inView && !document.hidden;
-      if (active) {
+    if (!element || !player) return;
+
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let inView = true;
+    const updatePlayback = () => {
+      if (motion.matches || !inView || document.hidden) {
+        player.pause();
+      } else {
         player.muted = true;
         void player.play().catch(() => {
-          /* A blocked autoplay leaves the real poster visible. */
+          // The poster remains available when autoplay is blocked.
         });
-      } else player.pause();
+      }
     };
     const observer = new IntersectionObserver(
       ([entry]) => {
-        inView = entry.isIntersecting && entry.intersectionRatio >= 0.25;
-        syncPlayback();
+        inView = entry.isIntersecting;
+        updatePlayback();
       },
-      { threshold: 0.25 },
+      { threshold: 0.05 },
     );
     observer.observe(element);
-    player.addEventListener("canplay", syncPlayback);
-    document.addEventListener("visibilitychange", syncPlayback);
+    motion.addEventListener("change", updatePlayback);
+    player.addEventListener("canplay", updatePlayback);
+    document.addEventListener("visibilitychange", updatePlayback);
+    updatePlayback();
     return () => {
       observer.disconnect();
-      player.removeEventListener("canplay", syncPlayback);
-      document.removeEventListener("visibilitychange", syncPlayback);
+      motion.removeEventListener("change", updatePlayback);
+      player.removeEventListener("canplay", updatePlayback);
+      document.removeEventListener("visibilitychange", updatePlayback);
       player.pause();
     };
-  }, [videoSrc, reduced]);
+  }, [videoSrc]);
 
   return (
     <div
@@ -78,7 +73,7 @@ export default function PrerenderedMedia({
           sizes="(max-width: 900px) 100vw, 56vw"
         />
       )}
-      {videoSrc && !reduced && (
+      {videoSrc && (
         <video
           ref={video}
           src={videoSrc}
