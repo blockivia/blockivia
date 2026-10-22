@@ -778,3 +778,207 @@ img {
   font-weight: 500;
 }
 
+
+/* Cinematic three-pillars bento — isolated from the preserved hero. */
+#pillars.pillars-section {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(56px, 8vw, 116px);
+}
+#pillars.pillars-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #050807 0%, #0b0f14 14%, #0b0f14 87%, #050807 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+#pillars > h2 {
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin-bottom: clamp(32px, 4vw, 60px);
+}
+#pillars .pillars-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+  grid-template-rows: repeat(2, minmax(295px, 1fr));
+  gap: 16px;
+}
+#pillars .pillar-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 295px;
+  padding: clamp(26px, 3.2vw, 44px);
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 28px;
+  background: #000;
+  color: #fff;
+}
+#pillars .pillar-card--1 {
+  grid-row: span 2;
+  min-height: 606px;
+}
+#pillars .pillar-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+#pillars .pillar-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 72% 36%, rgba(0, 209, 193, 0.15), transparent 58%);
+  filter: blur(24px);
+}
+#pillars .pillar-card--1 .pillar-art::before {
+  background: radial-gradient(ellipse at 50% 28%, rgba(0, 209, 193, 0.24), rgba(0, 70, 67, 0.08) 34%, transparent 65%);
+}
+#pillars .pillar-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #000 0%, transparent 55%);
+  pointer-events: none;
+}
+#pillars .pillar-card:not(:first-child) .pillar-art::after {
+  background: linear-gradient(90deg, #000 0%, transparent 88%);
+}
+#pillars .pillar-art .media-slot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+#pillars .pillar-art .media-slot[data-asset-state="pending"] {
+  background: transparent;
+  border: 0;
+}
+#pillars .pillar-art .media-poster {
+  object-fit: contain;
+  object-position: center 34%;
+}
+#pillars .pillar-card:not(:first-child) .media-poster {
+  object-position: 85% center;
+}
+#pillars .pillar-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 100%;
+  gap: 24px;
+}
+#pillars .pillar-card--1 .pillar-copy {
+  justify-content: flex-end;
+}
+#pillars .pillar-card h3 {
+  margin: 0;
+  color: #f2f7f5;
+  font-size: clamp(28px, 2.7vw, 42px);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+}
+#pillars .pillar-card p {
+  max-width: 490px;
+  margin: 0;
+  font-size: clamp(16px, 1.25vw, 18px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(235, 248, 244, 0.7);
+}
+#pillars .pillar-card--1 p {
+  padding: 20px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  background: rgba(13, 25, 23, 0.72);
+  backdrop-filter: blur(10px);
+}
+#pillars .pillar-card:not(:first-child) p {
+  max-width: 70%;
+}
+#pillars.bento-ready > h2,
+#pillars.bento-ready .pillar-card,
+#pillars.bento-ready .pillar-copy > * {
+  transition:
+    opacity 750ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#pillars.bento-ready:not(.bento-in) > h2 {
+  opacity: 0;
+  transform: translateY(28px);
+}
+#pillars.bento-ready:not(.bento-in) .pillar-card {
+  opacity: 0;
+  transform: translateY(46px) scale(0.96);
+}
+#pillars.bento-ready:not(.bento-in) .pillar-copy > * {
+  opacity: 0;
+  transform: translateY(22px);
+}
+#pillars.bento-in .pillar-card--1 { transition-delay: 100ms; }
+#pillars.bento-in .pillar-card--2 { transition-delay: 240ms; }
+#pillars.bento-in .pillar-card--3 { transition-delay: 390ms; }
+#pillars.bento-in .pillar-copy > h3 { transition-delay: 620ms; }
+#pillars.bento-in .pillar-copy > p { transition-delay: 780ms; }
+
+@media (max-width: 900px) {
+  #pillars.pillars-section {
+    padding-block: 64px;
+  }
+  #pillars .pillars-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 16px;
+  }
+  #pillars .pillar-card--1 {
+    grid-row: auto;
+    min-height: 470px;
+  }
+  #pillars .pillar-card:not(:first-child) {
+    min-height: 290px;
+  }
+  #pillars .pillar-card:not(:first-child) p {
+    max-width: 78%;
+  }
+  #pillars .pillar-card h3 {
+    font-size: clamp(26px, 6vw, 34px);
+  }
+}
+@media (max-width: 480px) {
+  #pillars .pillar-card {
+    padding: 24px;
+    border-radius: 22px;
+  }
+  #pillars .pillar-card:not(:first-child) p {
+    max-width: 100%;
+  }
+  #pillars .pillar-card--1 p {
+    padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #pillars.bento-ready > h2,
+  #pillars.bento-ready .pillar-card,
+  #pillars.bento-ready .pillar-copy > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
