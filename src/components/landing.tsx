@@ -39,6 +39,7 @@ export default function Landing({ locale }: { locale: Locale }) {
               slot="hero"
               imageSrc={media.heroPoster}
               videoSrc={media.heroVideo}
+              mobileVideoSrc={media.heroMobileVideo}
             />
           </div>
         </section>
