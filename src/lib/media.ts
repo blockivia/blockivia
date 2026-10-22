@@ -8,6 +8,7 @@ export const mediaFiles = {
   heroVideo: "hero-tunnel.mp4",
   heroMobileVideo: "hero-mobile.mp4",
   heroPoster: "hero-tunnel.webp",
+  presentation: "presentacion.webp",
   solutions: "soluciones.webp",
   research: "investigacion.webp",
   training: "capacitacion.webp",
