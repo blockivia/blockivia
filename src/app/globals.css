@@ -354,9 +354,55 @@ img {
 .editorial-section > h2 {
   margin: 0;
 }
-.presentation-section p {
+.presentation-section {
+  position: relative;
+  isolation: isolate;
+  align-items: end;
+  min-height: 330px;
+  padding-top: 64px;
+}
+.presentation-section > h2 {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  max-width: 520px;
+}
+.presentation-copy {
+  position: relative;
+  z-index: 1;
+}
+.presentation-copy p {
+  padding: 32px;
+  border-radius: 18px;
+  background: #0a100d;
   font-size: 18px;
   line-height: 1.65;
+}
+.presentation-section.with-media {
+  min-height: 600px;
+}
+.presentation-section.with-media .presentation-object {
+  position: absolute;
+  top: -20px;
+  right: -40px;
+  width: 66%;
+  height: 490px;
+  z-index: 0;
+  pointer-events: none;
+}
+.presentation-object .media-slot {
+  height: 100%;
+  aspect-ratio: auto;
+  border: 0;
+  background: transparent;
+}
+.presentation-object .media-poster {
+  object-fit: contain;
+  object-position: center right;
+}
+.presentation-section.with-media .presentation-copy {
+  grid-column: 1 / -1;
+  width: min(56%, 720px);
 }
 .pillars-grid {
   display: grid;
@@ -635,8 +681,31 @@ img {
   .editorial-section > h2 {
     margin-bottom: 0;
   }
-  .presentation-section p {
+  .presentation-section {
+    min-height: 0;
+    padding-top: 0;
+  }
+  .presentation-section > h2 {
+    margin-bottom: 24px;
+  }
+  .presentation-copy p {
+    padding: 24px;
     font-size: 16px;
+  }
+  .presentation-section.with-media {
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .presentation-section.with-media .presentation-object {
+    top: 0;
+    right: -20px;
+    width: calc(100% + 40px);
+    height: 390px;
+  }
+  .presentation-section.with-media .presentation-copy {
+    width: 100%;
   }
   .pillars-grid {
     grid-template-columns: minmax(0, 1fr);
