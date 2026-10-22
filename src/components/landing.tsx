@@ -34,11 +34,13 @@ export default function Landing({ locale }: { locale: Locale }) {
               {t.contactAction}
             </a>
           </div>
-          <PrerenderedMedia
-            slot="hero"
-            imageSrc={media.heroPoster}
-            videoSrc={media.heroVideo}
-          />
+          <div className="hero-visual">
+            <PrerenderedMedia
+              slot="hero"
+              imageSrc={media.heroPoster}
+              videoSrc={media.heroVideo}
+            />
+          </div>
         </section>
         <section
           id="presentation"
