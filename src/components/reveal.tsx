@@ -36,5 +36,41 @@ export default function Reveal() {
       elements.forEach((element) => element.classList.remove("media-waiting"));
     };
   }, []);
+  useEffect(() => {
+    const section = document.querySelector<HTMLElement>('[data-cinematic="bento"]');
+    if (!section || !("IntersectionObserver" in window)) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motion.matches) return;
+
+    // Keep an already-visible section stable when navigating directly to its anchor.
+    const rect = section.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.82 && rect.bottom > 0) return;
+
+    section.classList.add("bento-ready");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add("bento-in");
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    );
+    observer.observe(section);
+
+    const onMotionChange = () => {
+      if (motion.matches) {
+        observer.disconnect();
+        section.classList.remove("bento-ready", "bento-in");
+      }
+    };
+    motion.addEventListener("change", onMotionChange);
+    return () => {
+      observer.disconnect();
+      motion.removeEventListener("change", onMotionChange);
+      section.classList.remove("bento-ready", "bento-in");
+    };
+  }, []);
+
   return null;
 }
