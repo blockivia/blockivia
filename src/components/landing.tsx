@@ -45,12 +45,19 @@ export default function Landing({ locale }: { locale: Locale }) {
         </section>
         <section
           id="presentation"
-          className="section container presentation-section"
+          className={`section container presentation-section${media.presentation ? " with-media" : ""}`}
           data-block="2"
           aria-labelledby="presentation-title"
         >
           <h2 id="presentation-title">{t.presentation}</h2>
-          <p>{content.presentation[locale]}</p>
+          {media.presentation && (
+            <div className="presentation-object">
+              <PrerenderedMedia slot="presentation" imageSrc={media.presentation} />
+            </div>
+          )}
+          <div className="presentation-copy">
+            <p>{content.presentation[locale]}</p>
+          </div>
         </section>
         <section
           id="pillars"
