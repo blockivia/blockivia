@@ -61,20 +61,28 @@ export default function Landing({ locale }: { locale: Locale }) {
         </section>
         <section
           id="pillars"
-          className="section container"
+          className="section container pillars-section"
           data-block="3"
+          data-cinematic="bento"
           aria-labelledby="pillars-title"
         >
           <h2 id="pillars-title">{t.pillars}</h2>
           <div className="pillars-grid">
             {content.pillars.map((pillar, i) => (
-              <article className="pillar-card" key={pillar.title.es}>
-                <PrerenderedMedia
-                  slot={["solutions", "research", "training"][i]}
-                  imageSrc={pillarImages[i]}
-                />
-                <h3>{pillar.title[locale]}</h3>
-                <p>{pillar.description[locale]}</p>
+              <article
+                className={`pillar-card pillar-card--${i + 1}`}
+                key={pillar.title.es}
+              >
+                <div className="pillar-art">
+                  <PrerenderedMedia
+                    slot={["solutions", "research", "training"][i]}
+                    imageSrc={pillarImages[i]}
+                  />
+                </div>
+                <div className="pillar-copy">
+                  <h3>{pillar.title[locale]}</h3>
+                  <p>{pillar.description[locale]}</p>
+                </div>
               </article>
             ))}
           </div>
