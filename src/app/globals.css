@@ -391,6 +391,7 @@ img {
 }
 .media-slot video {
   display: block;
+  z-index: 1;
 }
 .media-waiting {
   opacity: 0;
@@ -571,15 +572,16 @@ img {
     display: block;
     width: 38px;
   }
-  /* The hero image and copy share one cinematic viewport on mobile. */
+  /* Mobile: show more of the artwork, then place the approved copy directly below. */
   .hero {
     width: 100%;
-    min-height: max(620px, calc(100svh - 76px));
+    min-height: max(640px, calc(100svh - 76px));
     display: flex;
-    flex-direction: row;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
     gap: 0;
-    padding: 0 20px 44px;
+    padding: 0 20px 32px;
     overflow: hidden;
   }
   .hero-content {
@@ -588,15 +590,18 @@ img {
     z-index: 2;
   }
   .hero-content h1 {
-    font-size: clamp(29px, 7.4vw, 40px);
-    line-height: 1.17;
+    font-size: clamp(27px, 7.2vw, 38px);
+    line-height: 1.18;
+    overflow-wrap: break-word;
+    text-wrap: balance;
   }
   .hero-visual {
     position: absolute;
-    inset: 0;
+    inset: 0 0 auto;
     z-index: -1;
     width: 100%;
-    height: 100%;
+    height: 60%;
+    background: #050807;
   }
   .hero-visual .media-slot {
     height: 100%;
@@ -605,15 +610,15 @@ img {
   .hero-visual .media-poster,
   .hero-visual video {
     object-fit: cover;
-    object-position: 69% center;
+    object-position: 75% 48%;
   }
   .hero-visual::after {
     background:
-      linear-gradient(0deg, #050807 0%, #050807ed 22%, #050807a6 43%, #0508071a 72%),
-      linear-gradient(90deg, #05080740, transparent 75%);
+      linear-gradient(0deg, #050807 0%, #050807bc 14%, transparent 54%),
+      linear-gradient(90deg, #05080733, transparent 72%);
   }
   .hero-content .button {
-    margin-top: 26px;
+    margin-top: 24px;
   }
   .section {
     margin-top: 64px;
