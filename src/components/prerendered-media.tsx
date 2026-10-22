@@ -6,15 +6,17 @@ import { useEffect, useRef } from "react";
 export default function PrerenderedMedia({
   imageSrc,
   videoSrc,
+  mobileVideoSrc,
   slot,
 }: {
   imageSrc?: string;
   videoSrc?: string;
+  mobileVideoSrc?: string;
   slot: string;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const hasAsset = Boolean(imageSrc || videoSrc);
+  const hasAsset = Boolean(imageSrc || videoSrc || mobileVideoSrc);
 
   useEffect(() => {
     const element = container.current;
@@ -49,7 +51,7 @@ export default function PrerenderedMedia({
       document.removeEventListener("visibilitychange", updatePlayback);
       player.pause();
     };
-  }, [videoSrc]);
+  }, [videoSrc, mobileVideoSrc]);
 
   return (
     <div
@@ -70,10 +72,9 @@ export default function PrerenderedMedia({
           sizes="(max-width: 900px) 100vw, 56vw"
         />
       )}
-      {videoSrc && (
+      {(videoSrc || mobileVideoSrc) && (
         <video
           ref={video}
-          src={videoSrc}
           poster={imageSrc}
           autoPlay
           muted
@@ -84,7 +85,12 @@ export default function PrerenderedMedia({
           controlsList="nofullscreen nodownload noremoteplayback"
           preload="auto"
           tabIndex={-1}
-        />
+        >
+          {mobileVideoSrc && (
+            <source src={mobileVideoSrc} type="video/mp4" media="(max-width: 900px)" />
+          )}
+          {videoSrc && <source src={videoSrc} type="video/mp4" />}
+        </video>
       )}
     </div>
   );
