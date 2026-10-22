@@ -709,9 +709,3 @@ img {
   font-weight: 500;
 }
 
-/* Reduced-motion users retain the static approved hero image. */
-@media (prefers-reduced-motion: reduce) {
-  .media-slot video {
-    display: none;
-  }
-}
