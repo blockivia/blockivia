@@ -571,32 +571,49 @@ img {
     display: block;
     width: 38px;
   }
+  /* The hero image and copy share one cinematic viewport on mobile. */
   .hero {
-    min-height: 0;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 40px;
-    padding: 64px 0 0;
-    overflow: visible;
+    width: 100%;
+    min-height: max(620px, calc(100svh - 76px));
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0;
+    padding: 0 20px 44px;
+    overflow: hidden;
   }
   .hero-content {
     width: 100%;
+    max-width: 520px;
+    z-index: 2;
+  }
+  .hero-content h1 {
+    font-size: clamp(29px, 7.4vw, 40px);
+    line-height: 1.17;
   }
   .hero-visual {
-    position: relative;
-    inset: auto;
-    z-index: 0;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     width: 100%;
+    height: 100%;
   }
   .hero-visual .media-slot {
-    height: auto;
-    aspect-ratio: 16/9;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .hero-visual .media-poster,
+  .hero-visual video {
+    object-fit: cover;
+    object-position: 69% center;
   }
   .hero-visual::after {
-    background: linear-gradient(0deg, #050807 0%, #05080700 70%);
+    background:
+      linear-gradient(0deg, #050807 0%, #050807ed 22%, #050807a6 43%, #0508071a 72%),
+      linear-gradient(90deg, #05080740, transparent 75%);
   }
   .hero-content .button {
-    margin-top: 32px;
+    margin-top: 26px;
   }
   .section {
     margin-top: 64px;
