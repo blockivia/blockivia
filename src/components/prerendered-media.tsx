@@ -21,10 +21,9 @@ export default function PrerenderedMedia({
     const player = video.current;
     if (!element || !player) return;
 
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let inView = true;
     const updatePlayback = () => {
-      if (motion.matches || !inView || document.hidden) {
+      if (!inView || document.hidden) {
         player.pause();
       } else {
         player.muted = true;
@@ -41,13 +40,11 @@ export default function PrerenderedMedia({
       { threshold: 0.05 },
     );
     observer.observe(element);
-    motion.addEventListener("change", updatePlayback);
     player.addEventListener("canplay", updatePlayback);
     document.addEventListener("visibilitychange", updatePlayback);
     updatePlayback();
     return () => {
       observer.disconnect();
-      motion.removeEventListener("change", updatePlayback);
       player.removeEventListener("canplay", updatePlayback);
       document.removeEventListener("visibilitychange", updatePlayback);
       player.pause();
