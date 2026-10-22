@@ -34,7 +34,6 @@ export default function PrerenderedMedia({
     let inView = false;
     const syncPlayback = () => {
       const active = inView && !document.hidden;
-      player.autoplay = active;
       if (active) {
         player.muted = true;
         void player.play().catch(() => {
@@ -50,9 +49,11 @@ export default function PrerenderedMedia({
       { threshold: 0.25 },
     );
     observer.observe(element);
+    player.addEventListener("canplay", syncPlayback);
     document.addEventListener("visibilitychange", syncPlayback);
     return () => {
       observer.disconnect();
+      player.removeEventListener("canplay", syncPlayback);
       document.removeEventListener("visibilitychange", syncPlayback);
       player.pause();
     };
@@ -82,13 +83,14 @@ export default function PrerenderedMedia({
           ref={video}
           src={videoSrc}
           poster={imageSrc}
+          autoPlay
           muted
           loop
           playsInline
           disablePictureInPicture
           disableRemotePlayback
           controlsList="nofullscreen nodownload noremoteplayback"
-          preload="none"
+          preload="auto"
           tabIndex={-1}
         />
       )}
