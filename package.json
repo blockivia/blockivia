@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "python3 -m http.server 3000 --bind 0.0.0.0 --directory out",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "preview:static": "python3 -m http.server 4173 --bind 0.0.0.0 --directory out"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.104.0",
@@ -19,6 +22,8 @@
     "wagmi": "^3.7.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

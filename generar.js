@@ -1,15 +1,16 @@
-const fs = require('fs');
-const path = require('path');
+import fs from "node:fs";
 
 // 1. Leer tu archivo logo.png real desde la carpeta public
-const logoPath = path.join(__dirname, 'public', 'logo.png');
+const logoPath = new URL("./public/logo.png", import.meta.url);
 
 if (!fs.existsSync(logoPath)) {
-  console.error('ERROR: No se encontró public/logo.png. Verifica que el archivo esté en la carpeta public.');
+  console.error(
+    "ERROR: No se encontró public/logo.png. Verifica que el archivo esté en la carpeta public.",
+  );
   process.exit(1);
 }
 
-const logoBase64 = fs.readFileSync(logoPath).toString('base64');
+const logoBase64 = fs.readFileSync(logoPath).toString("base64");
 const logoDataUri = `data:image/png;base64,${logoBase64}`;
 
 // 2. Generar el SVG con tu logo.png real incrustado y visible al 100%
@@ -153,6 +154,8 @@ const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 920
   </text>
 </svg>`;
 
-const outputPath = path.join(__dirname, 'public', 'certificado.svg');
-fs.writeFileSync(outputPath, svgContent, 'utf8');
-console.log('>>> ¡LISTO! Tu archivo logo.png quedó incrustado directamente en el certificado.');
+const outputPath = new URL("./public/certificado.svg", import.meta.url);
+fs.writeFileSync(outputPath, svgContent, "utf8");
+console.log(
+  ">>> ¡LISTO! Tu archivo logo.png quedó incrustado directamente en el certificado.",
+);
